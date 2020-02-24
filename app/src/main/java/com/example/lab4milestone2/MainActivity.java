@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-
+                updateLocationInfo(location);
             }
 
             @Override
@@ -62,14 +62,14 @@ public class MainActivity extends AppCompatActivity {
         if(Build.VERSION.SDK_INT >= 23 &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
+        }else {
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if(location != null){
-            updateLocationInfo(location);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null) {
+                updateLocationInfo(location);
+            }
         }
-
     }
 
     public void startListening(){
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 if(listAddresses.get(0).getLocality() != null){
                     address += listAddresses.get(0).getLocality() + "\n";
                 }
-                if(listAddresses.get(0).getPostalCode() != null){
+                if(listAddresses.get(0).getPostalCode() != null) {
                     address += listAddresses.get(0).getPostalCode() + "\n";
                 }
                 if(listAddresses.get(0).getCountryName() != null){
@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
             TextView addressTextView = (TextView) findViewById(R.id.address);
             addressTextView.setText(address);
+
         }catch (IOException e){
             e.printStackTrace();
         }
